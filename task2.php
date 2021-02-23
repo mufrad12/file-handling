@@ -33,11 +33,15 @@
 				$lastName = $_POST['lname'];
 			}
 			 if(empty($_POST['email'])) {
-				$emailErr = "Please fill up the email properly";
+				$emailErr = "Email is required";
 			}
 			else {
 				$email = $_POST['email'];
-			}
+			
+			if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
+				{ $emailErr = "Invalid email format"; }
+		         }
+
 			 if(empty($_POST['username'])) {
 				$usernameErr = "Please fill up the username properly";
 			}
@@ -51,19 +55,22 @@
 				$password = $_POST['password'];
 			}
            if(empty($_POST['recoveryemail'])) {
-				$recoveryemailErr = "Please fill up the recovery email properly";
+				$recoveryemailErr = "Recovery Email is required";
 			}
 			else {
 				$recoveryemail = $_POST['recoveryemail'];
-			}
+			
+           if (!filter_var($recoveryemail, FILTER_VALIDATE_EMAIL)) 
+				{ $recoveryemailErr = "Invalid recovery email format"; }
+		         }
 
+			if (empty($_POST['gender'])) {
+               $genderErr = "Gender is required"; 
+                   } 
 
-
-
-			if (empty($_POST["gender"])) {
-               $genderErr = "Gender is required"; } 
-
-            else { $gender = test_input($_POST["gender"]); }
+            else { 
+            	$gender = $_POST['gender']; 
+                 }
 
 		}
 	?>
@@ -86,7 +93,7 @@
 
            <br>
 
-           <label for="gender">Choose Gender</label>
+            <label for="gender">Choose Gender</label>
 			<input type="radio" name="gender" 
 			<?php if (isset($gender) && $gender=="female") echo "checked";?> value="female">Female 
 
@@ -94,7 +101,7 @@
 			<?php if (isset($gender) && $gender=="male") echo "checked";?> value="male">Male 
 
 			<input type="radio" name="gender" <?php if (isset($gender) && $gender=="other") echo "checked";?> value="other">Other
-
+            <p style="color:red"><?php echo $genderErr; ?></p>
 			<br>
 
            <label for="email">Email</label>
